@@ -15,7 +15,7 @@
         android:orientation="vertical"
         android:visibility="visible">
 
-        <!-- الصف الأول (من اليمين: ض ص ث ق ف غ ع ه خ ح ج) -->
+        <!-- الصف الأول -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
             <Button android:id="@+id/ar_ج" android:text="ج" style="@style/KeyStyle"/>
             <Button android:id="@+id/ar_ح" android:text="ح" style="@style/KeyStyle"/>
@@ -30,7 +30,7 @@
             <Button android:id="@+id/ar_ض" android:text="ض" style="@style/KeyStyle"/>
         </LinearLayout>
 
-        <!-- الصف التاني (من اليمين: ش س ي ب ل ا ت ن م ك ط) -->
+        <!-- الصف التاني -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
             <Button android:id="@+id/ar_ط" android:text="ط" style="@style/KeyStyle"/>
             <Button android:id="@+id/ar_ك" android:text="ك" style="@style/KeyStyle"/>
@@ -45,7 +45,7 @@
             <Button android:id="@+id/ar_ش" android:text="ش" style="@style/KeyStyle"/>
         </LinearLayout>
 
-        <!-- الصف التالت (من اليمين: ذ ء ؤ ر ى ة و ز ظ د + مسح) -->
+        <!-- الصف التالت -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
             <Button android:id="@+id/btn_del_ar" android:text="⌫" style="@style/KeyStyleAction" android:layout_weight="1.5"/>
             <Button android:id="@+id/ar_د" android:text="د" style="@style/KeyStyle"/>
@@ -60,7 +60,7 @@
             <Button android:id="@+id/ar_ذ" android:text="ذ" style="@style/KeyStyle"/>
         </LinearLayout>
 
-        <!-- الصف الرابع (الأزرار السفلية) -->
+        <!-- الصف الرابع -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
             <Button android:id="@+id/btn_123_ar" android:text="؟123" style="@style/KeyStyleAction" android:layout_weight="1.5"/>
             <Button android:id="@+id/btn_lang_to_en" android:text="EN" style="@style/KeyStyleAction" android:layout_weight="1.2"/>
@@ -75,9 +75,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone"> <!-- مخفية في البداية -->
+        android:visibility="gone">
 
-        <!-- الصف الأول (P في أقصى اليمين) -->
+        <!-- الصف الأول -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
             <Button android:id="@+id/en_q" android:text="q" style="@style/KeyStyle"/>
             <Button android:id="@+id/en_w" android:text="w" style="@style/KeyStyle"/>
@@ -104,7 +104,7 @@
             <Button android:id="@+id/en_l" android:text="l" style="@style/KeyStyle"/>
         </LinearLayout>
 
-        <!-- الصف التالت (Shift على الشمال، Delete على اليمين) -->
+        <!-- الصف التالت -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
             <Button android:id="@+id/en_shift" android:text="⇧" style="@style/KeyStyleAction" android:layout_weight="1.5"/>
             <Button android:id="@+id/en_z" android:text="z" style="@style/KeyStyle"/>
@@ -119,7 +119,8 @@
 
         <!-- الصف الرابع -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-            <Button android:id="@+id/btn_123_en" android:text="?123" style="@style/KeyStyleAction" android:layout_weight="1.5"/>
+            <!-- هنا كان المشكلة وغيرناها لـ !#1 -->
+            <Button android:id="@+id/btn_123_en" android:text="!#1" style="@style/KeyStyleAction" android:layout_weight="1.5"/>
             <Button android:id="@+id/btn_lang_to_ar" android:text="عربي" style="@style/KeyStyleAction" android:layout_weight="1.2"/>
             <Button android:id="@+id/btn_space_en" android:text="Space" style="@style/KeyStyleSpace" android:layout_weight="4"/>
             <Button android:id="@+id/btn_enter_en" android:text="↵" style="@style/KeyStyleAction" android:layout_weight="1.5"/>
