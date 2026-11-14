@@ -4,11 +4,12 @@
         <item name="android:layout_height">52dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_margin">1.5dp</item>
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:backgroundTint">#2C2C2C</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
+        <item name="android:padding">0dp</item>
     </style>
 
     <style name="KeyStyleAction">
@@ -21,15 +22,16 @@
         <item name="android:backgroundTint">#444444</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
+        <item name="android:padding">0dp</item>
     </style>
 
     <style name="KeyStyleSpace">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">52dp</item>
-        <item name="android:layout_margin">1.5dp</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">#FFFFFF</item>
-        <item name="android:backgroundTint">#2C2C2C</item>
+        <item name="android:background">@drawable/bg_space</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
     </style>
