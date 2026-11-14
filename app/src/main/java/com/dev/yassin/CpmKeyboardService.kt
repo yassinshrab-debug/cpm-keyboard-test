@@ -1,11 +1,17 @@
 package com.dev.yassin
 
+import android.annotation.SuppressLint
 import android.inputmethodservice.InputMethodService
+import android.os.Handler
+import android.os.Looper
+import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 
 class CpmKeyboardService : InputMethodService() {
+
+    private var isShifted = false
 
     override fun onCreateInputView(): View {
         val view = layoutInflater.inflate(R.layout.keyboard_view, null)
@@ -31,7 +37,7 @@ class CpmKeyboardService : InputMethodService() {
             }
         }
 
-        // --- ربط الحروف الإنجليزية ---
+        // --- ربط الحروف الإنجليزية (مع دعم الشيفت) ---
         val englishKeys = mapOf(
             R.id.en_q to "q", R.id.en_w to "w", R.id.en_e to "e", R.id.en_r to "r",
             R.id.en_t to "t", R.id.en_y to "y", R.id.en_u to "u", R.id.en_i to "i",
@@ -44,19 +50,33 @@ class CpmKeyboardService : InputMethodService() {
 
         for ((id, char) in englishKeys) {
             view.findViewById<Button>(id)?.setOnClickListener {
-                currentInputConnection.commitText(char, 1)
+                val textToCommit = if (isShifted) char.uppercase() else char
+                currentInputConnection.commitText(textToCommit, 1)
+                // لو الشيفت شغال، بعد ما تكتب حرف واحد يرجع small
+                if (isShifted) {
+                    isShifted = false
+                    updateShiftState(view)
+                }
             }
         }
 
-        // --- أزرار المسافة والمسح والإنتر (عربي) ---
+        // --- زرار الشيفت ---
+        view.findViewById<Button>(R.id.en_shift)?.setOnClickListener {
+            isShifted = !isShifted
+            updateShiftState(view)
+        }
+
+        // --- أزرار المسافة والإنتر (عربي) ---
         view.findViewById<Button>(R.id.btn_space_ar)?.setOnClickListener { currentInputConnection.commitText(" ", 1) }
-        view.findViewById<Button>(R.id.btn_del_ar)?.setOnClickListener { currentInputConnection.deleteSurroundingText(1, 0) }
         view.findViewById<Button>(R.id.btn_enter_ar)?.setOnClickListener { currentInputConnection.commitText("\n", 1) }
 
-        // --- أزرار المسافة والمسح والإنتر (إنجليزي) ---
+        // --- أزرار المسافة والإنتر (إنجليزي) ---
         view.findViewById<Button>(R.id.btn_space_en)?.setOnClickListener { currentInputConnection.commitText(" ", 1) }
-        view.findViewById<Button>(R.id.btn_del_en)?.setOnClickListener { currentInputConnection.deleteSurroundingText(1, 0) }
         view.findViewById<Button>(R.id.btn_enter_en)?.setOnClickListener { currentInputConnection.commitText("\n", 1) }
+
+        // --- إعداد زرار الحذف (الضغط المستمر) ---
+        setupContinuousDelete(view.findViewById(R.id.btn_del_ar))
+        setupContinuousDelete(view.findViewById(R.id.btn_del_en))
 
         // --- زرار تحويل اللغة ---
         view.findViewById<Button>(R.id.btn_lang_to_en)?.setOnClickListener {
@@ -70,5 +90,62 @@ class CpmKeyboardService : InputMethodService() {
         }
 
         return view
+    }
+
+    // دالة عشان تمسح حرف حرف ولو فضلت ضاغط بتمسح ورا بعضها
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupContinuousDelete(btn: View?) {
+        val handler = Handler(Looper.getMainLooper())
+        var isDeleting = false
+        var deleteRunnable: Runnable? = null
+
+        btn?.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    isDeleting = true
+                    currentInputConnection?.deleteSurroundingText(1, 0)
+                    deleteRunnable = object : Runnable {
+                        override fun run() {
+                            if (isDeleting) {
+                                currentInputConnection?.deleteSurroundingText(1, 0)
+                                handler.postDelayed(this, 50) // سرعة الحذف
+                            }
+                        }
+                    }
+                    handler.postDelayed(deleteRunnable!!, 400) // تأخير قبل ما يبدأ الحذف المستمر
+                    true
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    isDeleting = false
+                    deleteRunnable?.let { handler.removeCallbacks(it) }
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+    // دالة تحديث حالة الشيفت (الكابيتال أو سمول)
+    private fun updateShiftState(view: View) {
+        val englishKeys = listOf(
+            R.id.en_q to "q", R.id.en_w to "w", R.id.en_e to "e", R.id.en_r to "r",
+            R.id.en_t to "t", R.id.en_y to "y", R.id.en_u to "u", R.id.en_i to "i",
+            R.id.en_o to "o", R.id.en_p to "p", R.id.en_a to "a", R.id.en_s to "s",
+            R.id.en_d to "d", R.id.en_f to "f", R.id.en_g to "g", R.id.en_h to "h",
+            R.id.en_j to "j", R.id.en_k to "k", R.id.en_l to "l", R.id.en_z to "z",
+            R.id.en_x to "x", R.id.en_c to "c", R.id.en_v to "v", R.id.en_b to "b",
+            R.id.en_n to "n", R.id.en_m to "m"
+        )
+
+        for ((id, char) in englishKeys) {
+            val btn = view.findViewById<Button>(id)
+            btn?.text = if (isShifted) char.uppercase() else char
+        }
+
+        // تغيير لون زرار الشيفت لما يكون شغال
+        val shiftBtn = view.findViewById<Button>(R.id.en_shift)
+        shiftBtn?.backgroundTintList = android.content.res.ColorStateList.valueOf(
+            if (isShifted) android.graphics.Color.parseColor("#4285F4") else android.graphics.Color.TRANSPARENT
+        )
     }
 }
