@@ -6,21 +6,6 @@
     android:background="#1E1E1E"
     android:padding="2dp">
 
-    <!-- الشريط العلوي (مبدئياً فيه أيقونات للحافظة والتحويل والترجمة) -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:orientation="horizontal"
-        android:background="#2C2C2C"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="10dp"
-        android:layout_marginBottom="4dp">
-        
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📋 حافظة" android:textColor="#FFF" android:textSize="14sp" android:layout_marginEnd="15dp"/>
-        <TextView android:id="@+id/btn_toggle_fix" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🔄 عكس النص (مفعل)" android:textColor="#00FF00" android:textSize="14sp" android:layout_marginEnd="15dp"/>
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🌐 ترجمة" android:textColor="#FFF" android:textSize="14sp"/>
-    </LinearLayout>
-
     <!-- ================== واجهة اللغة العربية (من اليمين للشمال) ================== -->
     <LinearLayout
         android:id="@+id/layout_arabic"
@@ -62,7 +47,7 @@
 
         <!-- الصف التالت -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-            <Button android:id="@+id/btn_del_ar" style="@style/KeyStyleAction" android:layout_weight="1.5" android:background="@android:color/transparent" android:foreground="@drawable/ic_backspace"/>
+            <Button android:id="@+id/btn_del_ar" style="@style/KeyStyleAction" android:layout_weight="1.2" android:backgroundTint="#2C2C2C" android:foreground="@drawable/ic_backspace"/>
             <Button android:id="@+id/ar_د" android:text="د" style="@style/KeyStyle"/>
             <Button android:id="@+id/ar_ظ" android:text="ظ" style="@style/KeyStyle"/>
             <Button android:id="@+id/ar_ز" android:text="ز" style="@style/KeyStyle"/>
@@ -77,14 +62,14 @@
 
         <!-- الصف الرابع -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-            <Button android:id="@+id/btn_enter_ar" style="@style/KeyStyleAction" android:layout_weight="1.5" android:backgroundTint="#4285F4" android:foreground="@drawable/ic_enter"/>
-            <Button android:id="@+id/btn_space_ar" android:text="مسافة" style="@style/KeyStyleSpace" android:layout_weight="4"/>
-            <Button android:id="@+id/btn_lang_to_en" style="@style/KeyStyleAction" android:layout_weight="1.2" android:background="@android:color/transparent" android:foreground="@drawable/ic_globe"/>
-            <Button android:id="@+id/btn_123_ar" android:text="؟123" style="@style/KeyStyleAction" android:layout_weight="1.5"/>
+            <Button android:id="@+id/btn_enter_ar" style="@style/KeyStyleAction" android:layout_weight="1.2" android:backgroundTint="#4285F4" android:foreground="@drawable/ic_enter"/>
+            <Button android:id="@+id/btn_space_ar" android:text="مسافة" style="@style/KeyStyleSpace" android:layout_weight="5"/>
+            <Button android:id="@+id/btn_lang_to_en" style="@style/KeyStyleAction" android:layout_weight="1" android:backgroundTint="#2C2C2C" android:foreground="@drawable/ic_globe"/>
+            <Button android:id="@+id/btn_123_ar" android:text="؟123" style="@style/KeyStyleAction" android:layout_weight="1.2"/>
         </LinearLayout>
     </LinearLayout>
 
-    <!-- ================== واجهة اللغة الإنجليزية (من الشمال لليمين) ================== -->
+    <!-- ================== واجهة اللغة الإنجليزية ================== -->
     <LinearLayout
         android:id="@+id/layout_english"
         android:layout_width="match_parent"
@@ -93,7 +78,7 @@
         android:layoutDirection="ltr"
         android:visibility="gone">
 
-        <!-- الصف الأول (P على اليمين) -->
+        <!-- الصف الأول -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
             <Button android:id="@+id/en_q" android:text="q" style="@style/KeyStyle"/>
             <Button android:id="@+id/en_w" android:text="w" style="@style/KeyStyle"/>
@@ -122,7 +107,7 @@
 
         <!-- الصف التالت -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-            <Button android:id="@+id/en_shift" style="@style/KeyStyleAction" android:layout_weight="1.5" android:background="@android:color/transparent" android:foreground="@drawable/ic_shift"/>
+            <Button android:id="@+id/en_shift" style="@style/KeyStyleAction" android:layout_weight="1.2" android:backgroundTint="#2C2C2C" android:foreground="@drawable/ic_shift"/>
             <Button android:id="@+id/en_z" android:text="z" style="@style/KeyStyle"/>
             <Button android:id="@+id/en_x" android:text="x" style="@style/KeyStyle"/>
             <Button android:id="@+id/en_c" android:text="c" style="@style/KeyStyle"/>
@@ -130,15 +115,15 @@
             <Button android:id="@+id/en_b" android:text="b" style="@style/KeyStyle"/>
             <Button android:id="@+id/en_n" android:text="n" style="@style/KeyStyle"/>
             <Button android:id="@+id/en_m" android:text="m" style="@style/KeyStyle"/>
-            <Button android:id="@+id/btn_del_en" style="@style/KeyStyleAction" android:layout_weight="1.5" android:background="@android:color/transparent" android:foreground="@drawable/ic_backspace"/>
+            <Button android:id="@+id/btn_del_en" style="@style/KeyStyleAction" android:layout_weight="1.2" android:backgroundTint="#2C2C2C" android:foreground="@drawable/ic_backspace"/>
         </LinearLayout>
 
         <!-- الصف الرابع -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-            <Button android:id="@+id/btn_123_en" android:text="!#1" style="@style/KeyStyleAction" android:layout_weight="1.5"/>
-            <Button android:id="@+id/btn_lang_to_ar" style="@style/KeyStyleAction" android:layout_weight="1.2" android:background="@android:color/transparent" android:foreground="@drawable/ic_globe"/>
-            <Button android:id="@+id/btn_space_en" android:text="Space" style="@style/KeyStyleSpace" android:layout_weight="4"/>
-            <Button android:id="@+id/btn_enter_en" style="@style/KeyStyleAction" android:layout_weight="1.5" android:backgroundTint="#4285F4" android:foreground="@drawable/ic_enter"/>
+            <Button android:id="@+id/btn_123_en" android:text="!#1" style="@style/KeyStyleAction" android:layout_weight="1.2"/>
+            <Button android:id="@+id/btn_space_en" android:text="Space" style="@style/KeyStyleSpace" android:layout_weight="5"/>
+            <Button android:id="@+id/btn_lang_to_ar" style="@style/KeyStyleAction" android:layout_weight="1" android:backgroundTint="#2C2C2C" android:foreground="@drawable/ic_globe"/>
+            <Button android:id="@+id/btn_enter_en" style="@style/KeyStyleAction" android:layout_weight="1.2" android:backgroundTint="#4285F4" android:foreground="@drawable/ic_enter"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
