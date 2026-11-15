@@ -52,7 +52,6 @@ class CpmKeyboardService : InputMethodService() {
             view.findViewById<Button>(id)?.setOnClickListener {
                 val textToCommit = if (isShifted) char.uppercase() else char
                 currentInputConnection.commitText(textToCommit, 1)
-                // لو الشيفت شغال، بعد ما تكتب حرف واحد يرجع small
                 if (isShifted) {
                     isShifted = false
                     updateShiftState(view)
@@ -74,7 +73,7 @@ class CpmKeyboardService : InputMethodService() {
         view.findViewById<Button>(R.id.btn_space_en)?.setOnClickListener { currentInputConnection.commitText(" ", 1) }
         view.findViewById<Button>(R.id.btn_enter_en)?.setOnClickListener { currentInputConnection.commitText("\n", 1) }
 
-        // --- إعداد زرار الحذف (الضغط المستمر) ---
+        // --- إعداد زرار الحذف (الضغط المستمر الأسرع) ---
         setupContinuousDelete(view.findViewById(R.id.btn_del_ar))
         setupContinuousDelete(view.findViewById(R.id.btn_del_en))
 
@@ -92,7 +91,7 @@ class CpmKeyboardService : InputMethodService() {
         return view
     }
 
-    // دالة عشان تمسح حرف حرف ولو فضلت ضاغط بتمسح ورا بعضها
+    // دالة المسح المستمر (بقت أسرع)
     @SuppressLint("ClickableViewAccessibility")
     private fun setupContinuousDelete(btn: View?) {
         val handler = Handler(Looper.getMainLooper())
@@ -108,11 +107,13 @@ class CpmKeyboardService : InputMethodService() {
                         override fun run() {
                             if (isDeleting) {
                                 currentInputConnection?.deleteSurroundingText(1, 0)
-                                handler.postDelayed(this, 50) // سرعة الحذف
+                                // قللنا الوقت من 50 لـ 20 مللي ثانية عشان يمسح أسرع
+                                handler.postDelayed(this, 20) 
                             }
                         }
                     }
-                    handler.postDelayed(deleteRunnable!!, 400) // تأخير قبل ما يبدأ الحذف المستمر
+                    // قللنا وقت الانتظار الأولي من 400 لـ 250
+                    handler.postDelayed(deleteRunnable!!, 250) 
                     true
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
@@ -125,7 +126,6 @@ class CpmKeyboardService : InputMethodService() {
         }
     }
 
-    // دالة تحديث حالة الشيفت (الكابيتال أو سمول)
     private fun updateShiftState(view: View) {
         val englishKeys = listOf(
             R.id.en_q to "q", R.id.en_w to "w", R.id.en_e to "e", R.id.en_r to "r",
@@ -142,10 +142,9 @@ class CpmKeyboardService : InputMethodService() {
             btn?.text = if (isShifted) char.uppercase() else char
         }
 
-        // تغيير لون زرار الشيفت لما يكون شغال
         val shiftBtn = view.findViewById<Button>(R.id.en_shift)
         shiftBtn?.backgroundTintList = android.content.res.ColorStateList.valueOf(
-            if (isShifted) android.graphics.Color.parseColor("#4285F4") else android.graphics.Color.TRANSPARENT
+            if (isShifted) android.graphics.Color.parseColor("#4285F4") else android.graphics.Color.parseColor("#2C2C2C")
         )
     }
 }
