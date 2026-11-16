@@ -57,12 +57,12 @@
             <Button android:id="@+id/ar_ذ" android:text="ذ" style="@style/KeyStyle"/>
         </LinearLayout>
 
-        <!-- الصف السفلي: الأرقام -> اللغة -> المسافة -> الإنتر -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layoutDirection="ltr">
             <Button android:id="@+id/btn_123_ar" android:text="؟123" style="@style/KeyStyle"/>
             <ImageButton android:id="@+id/btn_lang_to_en" style="@style/KeyStyleIcon" android:src="@drawable/ic_globe" android:tint="#FFFFFF"/>
             <Button android:id="@+id/btn_space_ar" android:text="مسافة" style="@style/KeyStyleSpace" android:layout_weight="4"/>
-            <ImageButton android:id="@+id/btn_enter_ar" android:src="@drawable/ic_enter" android:background="@drawable/bg_enter" android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1.5" android:layout_margin="1dp" android:scaleType="centerInside"/>
+            <!-- ظبطنا الارتفاع هنا لـ 52dp عشان يتساوى مع الباقي -->
+            <ImageButton android:id="@+id/btn_enter_ar" android:src="@drawable/ic_enter" android:background="@drawable/bg_enter" android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="1.5" android:layout_margin="2dp" android:scaleType="centerInside"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -112,12 +112,12 @@
             <ImageButton android:id="@+id/btn_del_en" style="@style/KeyStyleIcon" android:src="@drawable/ic_backspace" android:layout_weight="1.2"/>
         </LinearLayout>
 
-        <!-- الصف السفلي: الأرقام -> اللغة -> المسافة -> الإنتر -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layoutDirection="ltr">
             <Button android:id="@+id/btn_123_en" android:text="!#1" style="@style/KeyStyle"/>
             <ImageButton android:id="@+id/btn_lang_to_ar" style="@style/KeyStyleIcon" android:src="@drawable/ic_globe" android:tint="#FFFFFF"/>
             <Button android:id="@+id/btn_space_en" android:text="Space" style="@style/KeyStyleSpace" android:layout_weight="4"/>
-            <ImageButton android:id="@+id/btn_enter_en" android:src="@drawable/ic_enter" android:background="@drawable/bg_enter" android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1.5" android:layout_margin="1dp" android:scaleType="centerInside"/>
+            <!-- ظبطنا الارتفاع هنا لـ 52dp عشان يتساوى مع الباقي -->
+            <ImageButton android:id="@+id/btn_enter_en" android:src="@drawable/ic_enter" android:background="@drawable/bg_enter" android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="1.5" android:layout_margin="2dp" android:scaleType="centerInside"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
