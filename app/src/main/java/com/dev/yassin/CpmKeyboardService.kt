@@ -7,6 +7,7 @@ import android.os.Looper
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.LinearLayout
 
 class CpmKeyboardService : InputMethodService() {
@@ -37,7 +38,7 @@ class CpmKeyboardService : InputMethodService() {
             }
         }
 
-        // --- ربط الحروف الإنجليزية (مع دعم الشيفت) ---
+        // --- ربط الحروف الإنجليزية ---
         val englishKeys = mapOf(
             R.id.en_q to "q", R.id.en_w to "w", R.id.en_e to "e", R.id.en_r to "r",
             R.id.en_t to "t", R.id.en_y to "y", R.id.en_u to "u", R.id.en_i to "i",
@@ -59,31 +60,31 @@ class CpmKeyboardService : InputMethodService() {
             }
         }
 
-        // --- زرار الشيفت ---
-        view.findViewById<Button>(R.id.en_shift)?.setOnClickListener {
+        // --- زرار الشيفت (بقى ImageButton) ---
+        view.findViewById<ImageButton>(R.id.en_shift)?.setOnClickListener {
             isShifted = !isShifted
             updateShiftState(view)
         }
 
         // --- أزرار المسافة والإنتر (عربي) ---
         view.findViewById<Button>(R.id.btn_space_ar)?.setOnClickListener { currentInputConnection.commitText(" ", 1) }
-        view.findViewById<Button>(R.id.btn_enter_ar)?.setOnClickListener { currentInputConnection.commitText("\n", 1) }
+        view.findViewById<ImageButton>(R.id.btn_enter_ar)?.setOnClickListener { currentInputConnection.commitText("\n", 1) }
 
         // --- أزرار المسافة والإنتر (إنجليزي) ---
         view.findViewById<Button>(R.id.btn_space_en)?.setOnClickListener { currentInputConnection.commitText(" ", 1) }
-        view.findViewById<Button>(R.id.btn_enter_en)?.setOnClickListener { currentInputConnection.commitText("\n", 1) }
+        view.findViewById<ImageButton>(R.id.btn_enter_en)?.setOnClickListener { currentInputConnection.commitText("\n", 1) }
 
-        // --- إعداد زرار الحذف (الضغط المستمر الأسرع) ---
+        // --- إعداد زرار الحذف ---
         setupContinuousDelete(view.findViewById(R.id.btn_del_ar))
         setupContinuousDelete(view.findViewById(R.id.btn_del_en))
 
         // --- زرار تحويل اللغة ---
-        view.findViewById<Button>(R.id.btn_lang_to_en)?.setOnClickListener {
+        view.findViewById<ImageButton>(R.id.btn_lang_to_en)?.setOnClickListener {
             layoutArabic.visibility = View.GONE
             layoutEnglish.visibility = View.VISIBLE
         }
 
-        view.findViewById<Button>(R.id.btn_lang_to_ar)?.setOnClickListener {
+        view.findViewById<ImageButton>(R.id.btn_lang_to_ar)?.setOnClickListener {
             layoutEnglish.visibility = View.GONE
             layoutArabic.visibility = View.VISIBLE
         }
@@ -91,7 +92,6 @@ class CpmKeyboardService : InputMethodService() {
         return view
     }
 
-    // دالة المسح المستمر (بقت أسرع)
     @SuppressLint("ClickableViewAccessibility")
     private fun setupContinuousDelete(btn: View?) {
         val handler = Handler(Looper.getMainLooper())
@@ -107,12 +107,10 @@ class CpmKeyboardService : InputMethodService() {
                         override fun run() {
                             if (isDeleting) {
                                 currentInputConnection?.deleteSurroundingText(1, 0)
-                                // قللنا الوقت من 50 لـ 20 مللي ثانية عشان يمسح أسرع
-                                handler.postDelayed(this, 20) 
+                                handler.postDelayed(this, 30) 
                             }
                         }
                     }
-                    // قللنا وقت الانتظار الأولي من 400 لـ 250
                     handler.postDelayed(deleteRunnable!!, 250) 
                     true
                 }
@@ -142,9 +140,12 @@ class CpmKeyboardService : InputMethodService() {
             btn?.text = if (isShifted) char.uppercase() else char
         }
 
-        val shiftBtn = view.findViewById<Button>(R.id.en_shift)
-        shiftBtn?.backgroundTintList = android.content.res.ColorStateList.valueOf(
-            if (isShifted) android.graphics.Color.parseColor("#4285F4") else android.graphics.Color.parseColor("#2C2C2C")
-        )
+        // تلوين زرار الشيفت لما يتفعل
+        val shiftBtn = view.findViewById<ImageButton>(R.id.en_shift)
+        if (isShifted) {
+            shiftBtn?.setColorFilter(android.graphics.Color.parseColor("#4285F4"))
+        } else {
+            shiftBtn?.setColorFilter(android.graphics.Color.parseColor("#FFFFFF"))
+        }
     }
 }
