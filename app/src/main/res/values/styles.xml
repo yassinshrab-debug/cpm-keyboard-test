@@ -1,10 +1,10 @@
 <resources>
     <style name="KeyStyle">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">52dp</item>
+        <item name="android:layout_height">50dp</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:layout_margin">2dp</item> <!-- مسافة عشان ميبقوش ملزوقين -->
-        <item name="android:textSize">24sp</item> <!-- مقاس الخط المثالي -->
+        <item name="android:layout_margin">1.5dp</item>
+        <item name="android:textSize">28sp</item> <!-- كبرنا الحروف -->
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:backgroundTint">#333333</item>
         <item name="android:insetTop">0dp</item>
@@ -14,22 +14,34 @@
 
     <style name="KeyStyleSpace">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">52dp</item>
-        <item name="android:layout_margin">2dp</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:layout_height">46dp</item> <!-- صغرنا الارتفاع شوية -->
+        <item name="android:layout_margin">1.5dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#333333</item>
         <item name="android:background">@drawable/bg_space</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
     </style>
 
-    <!-- ستايل الأيقونات الشفافة (حلينا الإيرور هنا) -->
     <style name="KeyStyleIcon">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">52dp</item>
+        <item name="android:layout_height">50dp</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:layout_margin">2dp</item>
+        <item name="android:layout_margin">1.5dp</item>
         <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
         <item name="android:scaleType">centerInside</item>
+    </style>
+
+    <!-- ستايل زرار 123 عشان يبقى بيضاوي زي الصورة -->
+    <style name="KeyStyle123">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">46dp</item>
+        <item name="android:layout_weight">1.2</item>
+        <item name="android:layout_margin">1.5dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:backgroundTint">#333333</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
     </style>
 </resources>
