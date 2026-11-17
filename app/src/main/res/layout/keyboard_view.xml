@@ -57,13 +57,12 @@
             <Button android:id="@+id/ar_ذ" android:text="ذ" style="@style/KeyStyle"/>
         </LinearLayout>
 
-        <!-- الصف السفلي: الأرقام -> اللغة -> المسافة -> الإنتر -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layoutDirection="ltr" android:gravity="center_vertical">
             <Button android:id="@+id/btn_123_ar" android:text="؟123" style="@style/KeyStyle123"/>
             <ImageButton android:id="@+id/btn_lang_to_en" style="@style/KeyStyleIcon" android:src="@drawable/ic_globe" android:tint="#FFFFFF" android:layout_weight="1"/>
-            <!-- كلمة المسافة بقت العربية -->
             <Button android:id="@+id/btn_space_ar" android:text="العربية" style="@style/KeyStyleSpace" android:layout_weight="3.5"/>
-            <ImageButton android:id="@+id/btn_enter_ar" android:src="@drawable/ic_enter" android:background="@drawable/bg_enter" android:layout_width="0dp" android:layout_height="46dp" android:layout_weight="1.3" android:layout_margin="1.5dp" android:scaleType="centerInside"/>
+            <!-- صغرنا الإنتر هنا (الوزن بقى 1.1) -->
+            <ImageButton android:id="@+id/btn_enter_ar" android:src="@drawable/ic_enter" android:background="@drawable/bg_enter" android:layout_width="0dp" android:layout_height="46dp" android:layout_weight="1.1" android:layout_margin="1dp" android:scaleType="centerInside"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -113,13 +112,12 @@
             <ImageButton android:id="@+id/btn_del_en" style="@style/KeyStyleIcon" android:src="@drawable/ic_backspace" android:layout_weight="1.2"/>
         </LinearLayout>
 
-        <!-- الصف السفلي: الأرقام -> اللغة -> المسافة -> الإنتر -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layoutDirection="ltr" android:gravity="center_vertical">
             <Button android:id="@+id/btn_123_en" android:text="!#1" style="@style/KeyStyle123"/>
             <ImageButton android:id="@+id/btn_lang_to_ar" style="@style/KeyStyleIcon" android:src="@drawable/ic_globe" android:tint="#FFFFFF" android:layout_weight="1"/>
-            <!-- كلمة المسافة بقت English -->
             <Button android:id="@+id/btn_space_en" android:text="English" style="@style/KeyStyleSpace" android:layout_weight="3.5"/>
-            <ImageButton android:id="@+id/btn_enter_en" android:src="@drawable/ic_enter" android:background="@drawable/bg_enter" android:layout_width="0dp" android:layout_height="46dp" android:layout_weight="1.3" android:layout_margin="1.5dp" android:scaleType="centerInside"/>
+            <!-- صغرنا الإنتر هنا برضه -->
+            <ImageButton android:id="@+id/btn_enter_en" android:src="@drawable/ic_enter" android:background="@drawable/bg_enter" android:layout_width="0dp" android:layout_height="46dp" android:layout_weight="1.1" android:layout_margin="1dp" android:scaleType="centerInside"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
