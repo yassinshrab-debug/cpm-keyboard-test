@@ -17,11 +17,23 @@ class CpmKeyboardService : InputMethodService() {
     override fun onCreateInputView(): View {
         val view = layoutInflater.inflate(R.layout.keyboard_view, null)
 
+        // --- تعريف الواجهات ---
         val layoutArabic = view.findViewById<LinearLayout>(R.id.layout_arabic)
         val layoutEnglish = view.findViewById<LinearLayout>(R.id.layout_english)
+        val layoutSymbolsAr = view.findViewById<LinearLayout>(R.id.layout_symbols_ar)
+        val layoutSymbolsEn = view.findViewById<LinearLayout>(R.id.layout_symbols_en)
+
+        // --- دالة مساعدة لربط الأزرار بالحروف/الرموز ---
+        fun bindKeys(map: Map<Int, String>) {
+            for ((id, char) in map) {
+                view.findViewById<Button>(id)?.setOnClickListener {
+                    currentInputConnection.commitText(char, 1)
+                }
+            }
+        }
 
         // --- ربط الحروف العربية ---
-        val arabicKeys = mapOf(
+        bindKeys(mapOf(
             R.id.ar_ض to "ض", R.id.ar_ص to "ص", R.id.ar_ث to "ث", R.id.ar_ق to "ق",
             R.id.ar_ف to "ف", R.id.ar_غ to "غ", R.id.ar_ع to "ع", R.id.ar_ه to "ه",
             R.id.ar_خ to "خ", R.id.ar_ح to "ح", R.id.ar_ج to "ج", R.id.ar_ش to "ش",
@@ -30,13 +42,7 @@ class CpmKeyboardService : InputMethodService() {
             R.id.ar_ك to "ك", R.id.ar_ط to "ط", R.id.ar_ذ to "ذ", R.id.ar_ء to "ء",
             R.id.ar_ؤ to "ؤ", R.id.ar_ر to "ر", R.id.ar_ى to "ى", R.id.ar_ة to "ة",
             R.id.ar_و to "و", R.id.ar_ز to "ز", R.id.ar_ظ to "ظ", R.id.ar_د to "د"
-        )
-
-        for ((id, char) in arabicKeys) {
-            view.findViewById<Button>(id)?.setOnClickListener {
-                currentInputConnection.commitText(char, 1)
-            }
-        }
+        ))
 
         // --- ربط الحروف الإنجليزية ---
         val englishKeys = mapOf(
@@ -48,7 +54,6 @@ class CpmKeyboardService : InputMethodService() {
             R.id.en_x to "x", R.id.en_c to "c", R.id.en_v to "v", R.id.en_b to "b",
             R.id.en_n to "n", R.id.en_m to "m"
         )
-
         for ((id, char) in englishKeys) {
             view.findViewById<Button>(id)?.setOnClickListener {
                 val textToCommit = if (isShifted) char.uppercase() else char
@@ -60,33 +65,89 @@ class CpmKeyboardService : InputMethodService() {
             }
         }
 
-        // --- زرار الشيفت (بقى ImageButton) ---
+        // --- ربط أرقام ورموز العربية ---
+        bindKeys(mapOf(
+            R.id.sym_ar_1 to "1", R.id.sym_ar_2 to "2", R.id.sym_ar_3 to "3", R.id.sym_ar_4 to "4", R.id.sym_ar_5 to "5",
+            R.id.sym_ar_6 to "6", R.id.sym_ar_7 to "7", R.id.sym_ar_8 to "8", R.id.sym_ar_9 to "9", R.id.sym_ar_0 to "0",
+            R.id.sym_ar_at to "@", R.id.sym_ar_hash to "#", R.id.sym_ar_dollar to "$", R.id.sym_ar_percent to "%", R.id.sym_ar_amp to "&",
+            R.id.sym_ar_star to "*", R.id.sym_ar_minus to "-", R.id.sym_ar_plus to "+", R.id.sym_ar_paren1 to "(", R.id.sym_ar_paren2 to ")",
+            R.id.sym_ar_slash to "/", R.id.sym_ar_backslash to "\\", R.id.sym_ar_quote to "\"", R.id.sym_ar_colon to ":", R.id.sym_ar_semicolon to ";",
+            R.id.sym_ar_excl to "!", R.id.sym_ar_quest to "?", R.id.sym_ar_comma to ",", R.id.sym_ar_dot to ".", R.id.sym_ar_equal to "="
+        ))
+
+        // --- ربط أرقام ورموز الإنجليزية ---
+        bindKeys(mapOf(
+            R.id.sym_en_1 to "1", R.id.sym_en_2 to "2", R.id.sym_en_3 to "3", R.id.sym_en_4 to "4", R.id.sym_en_5 to "5",
+            R.id.sym_en_6 to "6", R.id.sym_en_7 to "7", R.id.sym_en_8 to "8", R.id.sym_en_9 to "9", R.id.sym_en_0 to "0",
+            R.id.sym_en_at to "@", R.id.sym_en_hash to "#", R.id.sym_en_dollar to "$", R.id.sym_en_percent to "%", R.id.sym_en_amp to "&",
+            R.id.sym_en_star to "*", R.id.sym_en_minus to "-", R.id.sym_en_plus to "+", R.id.sym_en_paren1 to "(", R.id.sym_en_paren2 to ")",
+            R.id.sym_en_slash to "/", R.id.sym_en_backslash to "\\", R.id.sym_en_quote to "\"", R.id.sym_en_colon to ":", R.id.sym_en_semicolon to ";",
+            R.id.sym_en_excl to "!", R.id.sym_en_quest to "?", R.id.sym_en_comma to ",", R.id.sym_en_dot to ".", R.id.sym_en_equal to "="
+        ))
+
+        // --- أزرار المسافة والإنتر والشيفت ---
         view.findViewById<ImageButton>(R.id.en_shift)?.setOnClickListener {
             isShifted = !isShifted
             updateShiftState(view)
         }
+        
+        val spaceAr = view.findViewById<Button>(R.id.btn_space_ar)
+        val spaceEn = view.findViewById<Button>(R.id.btn_space_en)
+        val spaceArSym = view.findViewById<Button>(R.id.btn_space_ar_sym)
+        val spaceEnSym = view.findViewById<Button>(R.id.btn_space_en_sym)
+        
+        spaceAr?.setOnClickListener { currentInputConnection.commitText(" ", 1) }
+        spaceEn?.setOnClickListener { currentInputConnection.commitText(" ", 1) }
+        spaceArSym?.setOnClickListener { currentInputConnection.commitText(" ", 1) }
+        spaceEnSym?.setOnClickListener { currentInputConnection.commitText(" ", 1) }
 
-        // --- أزرار المسافة والإنتر (عربي) ---
-        view.findViewById<Button>(R.id.btn_space_ar)?.setOnClickListener { currentInputConnection.commitText(" ", 1) }
         view.findViewById<ImageButton>(R.id.btn_enter_ar)?.setOnClickListener { currentInputConnection.commitText("\n", 1) }
-
-        // --- أزرار المسافة والإنتر (إنجليزي) ---
-        view.findViewById<Button>(R.id.btn_space_en)?.setOnClickListener { currentInputConnection.commitText(" ", 1) }
         view.findViewById<ImageButton>(R.id.btn_enter_en)?.setOnClickListener { currentInputConnection.commitText("\n", 1) }
+        view.findViewById<ImageButton>(R.id.btn_enter_ar_sym)?.setOnClickListener { currentInputConnection.commitText("\n", 1) }
+        view.findViewById<ImageButton>(R.id.btn_enter_en_sym)?.setOnClickListener { currentInputConnection.commitText("\n", 1) }
 
         // --- إعداد زرار الحذف ---
         setupContinuousDelete(view.findViewById(R.id.btn_del_ar))
         setupContinuousDelete(view.findViewById(R.id.btn_del_en))
 
-        // --- زرار تحويل اللغة ---
+        // --- أزرار تحويل الواجهات (الحروف <-> الرموز <-> اللغة) ---
+        // من العربي للحروف إلى رموز العربي
+        view.findViewById<Button>(R.id.btn_123_ar)?.setOnClickListener {
+            layoutArabic.visibility = View.GONE
+            layoutSymbolsAr.visibility = View.VISIBLE
+        }
+        // من رموز العربي إلى الحروف
+        view.findViewById<Button>(R.id.btn_abc_ar)?.setOnClickListener {
+            layoutSymbolsAr.visibility = View.GONE
+            layoutArabic.visibility = View.VISIBLE
+        }
+        // من الإنجليزي للحروف إلى رموز الإنجليزي
+        view.findViewById<Button>(R.id.btn_123_en)?.setOnClickListener {
+            layoutEnglish.visibility = View.GONE
+            layoutSymbolsEn.visibility = View.VISIBLE
+        }
+        // من رموز الإنجليزي إلى الحروف
+        view.findViewById<Button>(R.id.btn_abc_en)?.setOnClickListener {
+            layoutSymbolsEn.visibility = View.GONE
+            layoutEnglish.visibility = View.VISIBLE
+        }
+
+        // زرار تحويل اللغة
         view.findViewById<ImageButton>(R.id.btn_lang_to_en)?.setOnClickListener {
             layoutArabic.visibility = View.GONE
             layoutEnglish.visibility = View.VISIBLE
         }
-
         view.findViewById<ImageButton>(R.id.btn_lang_to_ar)?.setOnClickListener {
             layoutEnglish.visibility = View.GONE
             layoutArabic.visibility = View.VISIBLE
+        }
+        view.findViewById<ImageButton>(R.id.btn_lang_to_en_sym)?.setOnClickListener {
+            layoutSymbolsAr.visibility = View.GONE
+            layoutSymbolsEn.visibility = View.VISIBLE
+        }
+        view.findViewById<ImageButton>(R.id.btn_lang_to_ar_sym)?.setOnClickListener {
+            layoutSymbolsEn.visibility = View.GONE
+            layoutSymbolsAr.visibility = View.VISIBLE
         }
 
         return view
@@ -107,7 +168,7 @@ class CpmKeyboardService : InputMethodService() {
                         override fun run() {
                             if (isDeleting) {
                                 currentInputConnection?.deleteSurroundingText(1, 0)
-                                handler.postDelayed(this, 30) 
+                                handler.postDelayed(this, 20) 
                             }
                         }
                     }
@@ -140,7 +201,6 @@ class CpmKeyboardService : InputMethodService() {
             btn?.text = if (isShifted) char.uppercase() else char
         }
 
-        // تلوين زرار الشيفت لما يتفعل
         val shiftBtn = view.findViewById<ImageButton>(R.id.en_shift)
         if (isShifted) {
             shiftBtn?.setColorFilter(android.graphics.Color.parseColor("#4285F4"))
