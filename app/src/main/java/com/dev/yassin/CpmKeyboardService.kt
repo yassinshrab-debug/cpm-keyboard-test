@@ -1,23 +1,28 @@
 package com.dev.yassin
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.inputmethodservice.InputMethodService
 import android.os.Handler
 import android.os.Looper
+import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.PopupWindow
 
 class CpmKeyboardService : InputMethodService() {
 
     private var isShifted = false
+    private var currentPopup: PopupWindow? = null
 
     override fun onCreateInputView(): View {
         val view = layoutInflater.inflate(R.layout.keyboard_view, null)
 
-        // --- تعريف الواجهات ---
         val layoutArabic = view.findViewById<LinearLayout>(R.id.layout_arabic)
         val layoutEnglish = view.findViewById<LinearLayout>(R.id.layout_english)
         val layoutSymbolsAr = view.findViewById<LinearLayout>(R.id.layout_symbols_ar)
@@ -25,7 +30,6 @@ class CpmKeyboardService : InputMethodService() {
         val layoutSymbolsExtraAr = view.findViewById<LinearLayout>(R.id.layout_symbols_extra_ar)
         val layoutSymbolsExtraEn = view.findViewById<LinearLayout>(R.id.layout_symbols_extra_en)
 
-        // --- دالة مساعدة لربط الأزرار ---
         fun bindKeys(map: Map<Int, String>) {
             for ((id, char) in map) {
                 view.findViewById<Button>(id)?.setOnClickListener {
@@ -34,7 +38,7 @@ class CpmKeyboardService : InputMethodService() {
             }
         }
 
-        // --- ربط الحروف العربية ---
+        // ربط الحروف العربية
         bindKeys(mapOf(
             R.id.ar_ض to "ض", R.id.ar_ص to "ص", R.id.ar_ث to "ث", R.id.ar_ق to "ق",
             R.id.ar_ف to "ف", R.id.ar_غ to "غ", R.id.ar_ع to "ع", R.id.ar_ه to "ه",
@@ -46,7 +50,10 @@ class CpmKeyboardService : InputMethodService() {
             R.id.ar_و to "و", R.id.ar_ز to "ز", R.id.ar_ظ to "ظ", R.id.ar_د to "د"
         ))
 
-        // --- ربط الحروف الإنجليزية ---
+        // تفعيل الضغط المطول (للفاء كمثال)
+        setupLongPress(view.findViewById(R.id.ar_ف), listOf("ڤ", "ڥ", "ڦ"))
+
+        // ربط الحروف الإنجليزية
         val englishKeys = mapOf(
             R.id.en_q to "q", R.id.en_w to "w", R.id.en_e to "e", R.id.en_r to "r",
             R.id.en_t to "t", R.id.en_y to "y", R.id.en_u to "u", R.id.en_i to "i",
@@ -67,136 +74,75 @@ class CpmKeyboardService : InputMethodService() {
             }
         }
 
-        // --- ربط الأرقام والرموز العربية ---
+        // ربط أرقام ورموز العربية
         bindKeys(mapOf(
             R.id.sym_ar_1 to "١", R.id.sym_ar_2 to "٢", R.id.sym_ar_3 to "٣", R.id.sym_ar_4 to "٤", R.id.sym_ar_5 to "٥",
             R.id.sym_ar_6 to "٦", R.id.sym_ar_7 to "٧", R.id.sym_ar_8 to "٨", R.id.sym_ar_9 to "٩", R.id.sym_ar_0 to "٠",
-            R.id.sym_ar_at to "@", R.id.sym_ar_hash to "#", R.id.sym_ar_dollar to "$", R.id.sym_ar_percent to "%", R.id.sym_ar_amp to "&",
-            R.id.sym_ar_star to "*", R.id.sym_ar_minus to "-", R.id.sym_ar_plus to "+", R.id.sym_ar_paren1 to "(", R.id.sym_ar_paren2 to ")",
-            R.id.sym_ar_slash to "/", R.id.sym_ar_backslash to "\\", R.id.sym_ar_quote to "\"", R.id.sym_ar_colon to ":", R.id.sym_ar_semicolon to ";",
-            R.id.sym_ar_excl to "!", R.id.sym_ar_quest to "?", R.id.sym_ar_comma to ",", R.id.sym_ar_dot to ".", R.id.sym_ar_equal to "="
+            R.id.sym_ar_at to "@", R.id.sym_ar_hash to "#", R.id.sym_ar_dollar to "$", R.id.sym_ar_underscore to "_", R.id.sym_ar_amp to "&",
+            R.id.sym_ar_minus to "-", R.id.sym_ar_plus to "+", R.id.sym_ar_paren1 to "(", R.id.sym_ar_paren2 to ")", R.id.sym_ar_slash to "/",
+            R.id.sym_ar_star to "*", R.id.sym_ar_quote to "\"", R.id.sym_ar_apostrophe to "'", R.id.sym_ar_colon to ":", R.id.sym_ar_semicolon to ";",
+            R.id.sym_ar_excl to "!", R.id.sym_ar_quest to "?", R.id.sym_ar_comma to "،", R.id.sym_ar_dot to "."
         ))
 
-        // --- ربط الأرقام والرموز الإنجليزية ---
+        // ربط أرقام ورموز الإنجليزية
         bindKeys(mapOf(
             R.id.sym_en_1 to "1", R.id.sym_en_2 to "2", R.id.sym_en_3 to "3", R.id.sym_en_4 to "4", R.id.sym_en_5 to "5",
             R.id.sym_en_6 to "6", R.id.sym_en_7 to "7", R.id.sym_en_8 to "8", R.id.sym_en_9 to "9", R.id.sym_en_0 to "0",
-            R.id.sym_en_at to "@", R.id.sym_en_hash to "#", R.id.sym_en_dollar to "$", R.id.sym_en_percent to "%", R.id.sym_en_amp to "&",
-            R.id.sym_en_star to "*", R.id.sym_en_minus to "-", R.id.sym_en_plus to "+", R.id.sym_en_paren1 to "(", R.id.sym_en_paren2 to ")",
-            R.id.sym_en_slash to "/", R.id.sym_en_backslash to "\\", R.id.sym_en_quote to "\"", R.id.sym_en_colon to ":", R.id.sym_en_semicolon to ";",
-            R.id.sym_en_excl to "!", R.id.sym_en_quest to "?", R.id.sym_en_comma to ",", R.id.sym_en_dot to ".", R.id.sym_en_equal to "="
+            R.id.sym_en_at to "@", R.id.sym_en_hash to "#", R.id.sym_en_dollar to "$", R.id.sym_en_underscore to "_", R.id.sym_en_amp to "&",
+            R.id.sym_en_minus to "-", R.id.sym_en_plus to "+", R.id.sym_en_paren1 to "(", R.id.sym_en_paren2 to ")", R.id.sym_en_slash to "/",
+            R.id.sym_en_star to "*", R.id.sym_en_quote to "\"", R.id.sym_en_apostrophe to "'", R.id.sym_en_colon to ":", R.id.sym_en_semicolon to ";",
+            R.id.sym_en_excl to "!", R.id.sym_en_quest to "?", R.id.sym_en_comma to ",", R.id.sym_en_dot to "."
         ))
 
-        // --- ربط الرموز الإضافية (عربي) ---
+        // ربط الرموز الإضافية (عربي)
         bindKeys(mapOf(
-            R.id.sym_ex_ar_tilde to "~", R.id.sym_ex_ar_pipe to "|", R.id.sym_ex_ar_bullet to "•", R.id.sym_ex_ar_sqrt to "√", R.id.sym_ex_ar_pi to "π",
-            R.id.sym_ex_ar_div to "÷", R.id.sym_ex_ar_mul to "×", R.id.sym_ex_ar_sect to "§", R.id.sym_ex_ar_delta to "Δ", R.id.sym_ex_ar_pound to "£",
-            R.id.sym_ex_ar_cent to "¢", R.id.sym_ex_ar_euro to "€", R.id.sym_ex_ar_yen to "¥", R.id.sym_ex_ar_pow to "^", R.id.sym_ex_ar_deg to "°",
-            R.id.sym_ex_ar_eq2 to "=", R.id.sym_ex_ar_lbrace to "{", R.id.sym_ex_ar_rbrace to "}", R.id.sym_ex_ar_perc to "%", R.id.sym_ex_ar_copy to "©",
-            R.id.sym_ex_ar_reg to "®", R.id.sym_ex_ar_tm to "™", R.id.sym_ex_ar_check to "✓", R.id.sym_ex_ar_lbrack to "[", R.id.sym_ex_ar_rbrack to "]"
+            R.id.sym_ex_ar_tilde to "~", R.id.sym_ex_ar_backtick to "`", R.id.sym_ex_ar_pipe to "|", R.id.sym_ex_ar_bullet to "•", R.id.sym_ex_ar_sqrt to "√",
+            R.id.sym_ex_ar_pi to "π", R.id.sym_ex_ar_div to "÷", R.id.sym_ex_ar_mul to "×", R.id.sym_ex_ar_sect to "§", R.id.sym_ex_ar_delta to "Δ",
+            R.id.sym_ex_ar_pound to "£", R.id.sym_ex_ar_cent to "¢", R.id.sym_ex_ar_euro to "€", R.id.sym_ex_ar_yen to "¥", R.id.sym_ex_ar_pow to "^",
+            R.id.sym_ex_ar_deg to "°", R.id.sym_ex_ar_eq2 to "=", R.id.sym_ex_ar_lbrace to "{", R.id.sym_ex_ar_rbrace to "}", R.id.sym_ex_ar_backslash to "\\",
+            R.id.sym_ex_ar_perc to "%", R.id.sym_ex_ar_copy to "©", R.id.sym_ex_ar_reg to "®", R.id.sym_ex_ar_tm to "™", R.id.sym_ex_ar_check to "✓",
+            R.id.sym_ex_ar_lbrack to "[", R.id.sym_ex_ar_rbrack to "]", R.id.sym_ex_ar_gt to ">"
         ))
 
-        // --- ربط الرموز الإضافية (إنجليزي) ---
+        // ربط الرموز الإضافية (إنجليزي)
         bindKeys(mapOf(
-            R.id.sym_ex_en_tilde to "~", R.id.sym_ex_en_pipe to "|", R.id.sym_ex_en_bullet to "•", R.id.sym_ex_en_sqrt to "√", R.id.sym_ex_en_pi to "π",
-            R.id.sym_ex_en_div to "÷", R.id.sym_ex_en_mul to "×", R.id.sym_ex_en_sect to "§", R.id.sym_ex_en_delta to "Δ", R.id.sym_ex_en_pound to "£",
-            R.id.sym_ex_en_cent to "¢", R.id.sym_ex_en_euro to "€", R.id.sym_ex_en_yen to "¥", R.id.sym_ex_en_pow to "^", R.id.sym_ex_en_deg to "°",
-            R.id.sym_ex_en_eq2 to "=", R.id.sym_ex_en_lbrace to "{", R.id.sym_ex_en_rbrace to "}", R.id.sym_ex_en_perc to "%", R.id.sym_ex_en_copy to "©",
-            R.id.sym_ex_en_reg to "®", R.id.sym_ex_en_tm to "™", R.id.sym_ex_en_check to "✓", R.id.sym_ex_en_lbrack to "[", R.id.sym_ex_en_rbrack to "]"
+            R.id.sym_ex_en_tilde to "~", R.id.sym_ex_en_backtick to "`", R.id.sym_ex_en_pipe to "|", R.id.sym_ex_en_bullet to "•", R.id.sym_ex_en_sqrt to "√",
+            R.id.sym_ex_en_pi to "π", R.id.sym_ex_en_div to "÷", R.id.sym_ex_en_mul to "×", R.id.sym_ex_en_sect to "§", R.id.sym_ex_en_delta to "Δ",
+            R.id.sym_ex_en_pound to "£", R.id.sym_ex_en_cent to "¢", R.id.sym_ex_en_euro to "€", R.id.sym_ex_en_yen to "¥", R.id.sym_ex_en_pow to "^",
+            R.id.sym_ex_en_deg to "°", R.id.sym_ex_en_eq2 to "=", R.id.sym_ex_en_lbrace to "{", R.id.sym_ex_en_rbrace to "}", R.id.sym_ex_en_backslash to "\\",
+            R.id.sym_ex_en_perc to "%", R.id.sym_ex_en_copy to "©", R.id.sym_ex_en_reg to "®", R.id.sym_ex_en_tm to "™", R.id.sym_ex_en_check to "✓",
+            R.id.sym_ex_en_lbrack to "[", R.id.sym_ex_en_rbrack to "]", R.id.sym_ex_en_gt to ">"
         ))
 
-        // --- أزرار المسافة والإنتر (كل الواجهات) ---
+        // المسافة والإنتر
         val spaces = listOf(R.id.btn_space_ar, R.id.btn_space_en, R.id.btn_space_ar_sym, R.id.btn_space_en_sym, R.id.btn_space_ar_extra, R.id.btn_space_en_extra)
         for (id in spaces) view.findViewById<Button>(id)?.setOnClickListener { currentInputConnection.commitText(" ", 1) }
 
         val enters = listOf(R.id.btn_enter_ar, R.id.btn_enter_en, R.id.btn_enter_ar_sym, R.id.btn_enter_en_sym, R.id.btn_enter_ar_extra, R.id.btn_enter_en_extra)
         for (id in enters) view.findViewById<ImageButton>(id)?.setOnClickListener { currentInputConnection.commitText("\n", 1) }
 
-        // --- إعداد زرار الحذف ---
+        // الحذف
         val dels = listOf(R.id.btn_del_ar, R.id.btn_del_en, R.id.btn_del_ar_sym, R.id.btn_del_en_sym, R.id.btn_del_ar_extra, R.id.btn_del_en_extra)
         for (id in dels) setupContinuousDelete(view.findViewById(id))
 
-        // --- أزرار التنقل بين الصفحات ---
-        
-        // من العربي للحروف إلى أرقام ورموز العربي
-        view.findViewById<Button>(R.id.btn_123_ar)?.setOnClickListener {
-            layoutArabic.visibility = View.GONE
-            layoutSymbolsAr.visibility = View.VISIBLE
-        }
-        // من رموز العربي إلى الحروف
-        view.findViewById<Button>(R.id.btn_abc_ar)?.setOnClickListener {
-            layoutSymbolsAr.visibility = View.GONE
-            layoutArabic.visibility = View.VISIBLE
-        }
-        // من أرقام العربي إلى الرموز الإضافية
-        view.findViewById<Button>(R.id.btn_more_sym_ar)?.setOnClickListener {
-            layoutSymbolsAr.visibility = View.GONE
-            layoutSymbolsExtraAr.visibility = View.VISIBLE
-        }
-        // من الرموز الإضافية إلى أرقام العربي
-        view.findViewById<Button>(R.id.btn_back_to_sym_ar)?.setOnClickListener {
-            layoutSymbolsExtraAr.visibility = View.GONE
-            layoutSymbolsAr.visibility = View.VISIBLE
-        }
-        // من الرموز الإضافية إلى الحروف
-        view.findViewById<Button>(R.id.btn_abc_ar_extra)?.setOnClickListener {
-            layoutSymbolsExtraAr.visibility = View.GONE
-            layoutArabic.visibility = View.VISIBLE
-        }
+        // التنقل بين الصفحات
+        view.findViewById<Button>(R.id.btn_123_ar)?.setOnClickListener { layoutArabic.visibility = View.GONE; layoutSymbolsAr.visibility = View.VISIBLE }
+        view.findViewById<Button>(R.id.btn_abc_ar)?.setOnClickListener { layoutSymbolsAr.visibility = View.GONE; layoutArabic.visibility = View.VISIBLE }
+        view.findViewById<Button>(R.id.btn_more_sym_ar)?.setOnClickListener { layoutSymbolsAr.visibility = View.GONE; layoutSymbolsExtraAr.visibility = View.VISIBLE }
+        view.findViewById<Button>(R.id.btn_back_to_sym_ar)?.setOnClickListener { layoutSymbolsExtraAr.visibility = View.GONE; layoutSymbolsAr.visibility = View.VISIBLE }
+        view.findViewById<Button>(R.id.btn_abc_ar_extra)?.setOnClickListener { layoutSymbolsExtraAr.visibility = View.GONE; layoutArabic.visibility = View.VISIBLE }
 
-        // من الإنجليزي للحروف إلى أرقام ورموز الإنجليزي
-        view.findViewById<Button>(R.id.btn_123_en)?.setOnClickListener {
-            layoutEnglish.visibility = View.GONE
-            layoutSymbolsEn.visibility = View.VISIBLE
-        }
-        // من رموز الإنجليزي إلى الحروف
-        view.findViewById<Button>(R.id.btn_abc_en)?.setOnClickListener {
-            layoutSymbolsEn.visibility = View.GONE
-            layoutEnglish.visibility = View.VISIBLE
-        }
-        // من أرقام الإنجليزي إلى الرموز الإضافية
-        view.findViewById<Button>(R.id.btn_more_sym_en)?.setOnClickListener {
-            layoutSymbolsEn.visibility = View.GONE
-            layoutSymbolsExtraEn.visibility = View.VISIBLE
-        }
-        // من الرموز الإضافية إلى أرقام الإنجليزي
-        view.findViewById<Button>(R.id.btn_back_to_sym_en)?.setOnClickListener {
-            layoutSymbolsExtraEn.visibility = View.GONE
-            layoutSymbolsEn.visibility = View.VISIBLE
-        }
-        // من الرموز الإضافية إلى الحروف الإنجليزية
-        view.findViewById<Button>(R.id.btn_abc_en_extra)?.setOnClickListener {
-            layoutSymbolsExtraEn.visibility = View.GONE
-            layoutEnglish.visibility = View.VISIBLE
-        }
+        view.findViewById<Button>(R.id.btn_123_en)?.setOnClickListener { layoutEnglish.visibility = View.GONE; layoutSymbolsEn.visibility = View.VISIBLE }
+        view.findViewById<Button>(R.id.btn_abc_en)?.setOnClickListener { layoutSymbolsEn.visibility = View.GONE; layoutEnglish.visibility = View.VISIBLE }
+        view.findViewById<Button>(R.id.btn_more_sym_en)?.setOnClickListener { layoutSymbolsEn.visibility = View.GONE; layoutSymbolsExtraEn.visibility = View.VISIBLE }
+        view.findViewById<Button>(R.id.btn_back_to_sym_en)?.setOnClickListener { layoutSymbolsExtraEn.visibility = View.GONE; layoutSymbolsEn.visibility = View.VISIBLE }
+        view.findViewById<Button>(R.id.btn_abc_en_extra)?.setOnClickListener { layoutSymbolsExtraEn.visibility = View.GONE; layoutEnglish.visibility = View.VISIBLE }
 
-        // زرار تحويل اللغة (في كل الواجهات)
-        view.findViewById<ImageButton>(R.id.btn_lang_to_en)?.setOnClickListener {
-            layoutArabic.visibility = View.GONE
-            layoutEnglish.visibility = View.VISIBLE
-        }
-        view.findViewById<ImageButton>(R.id.btn_lang_to_ar)?.setOnClickListener {
-            layoutEnglish.visibility = View.GONE
-            layoutArabic.visibility = View.VISIBLE
-        }
-        view.findViewById<ImageButton>(R.id.btn_lang_to_en_sym)?.setOnClickListener {
-            layoutSymbolsAr.visibility = View.GONE
-            layoutSymbolsEn.visibility = View.VISIBLE
-        }
-        view.findViewById<ImageButton>(R.id.btn_lang_to_ar_sym)?.setOnClickListener {
-            layoutSymbolsEn.visibility = View.GONE
-            layoutSymbolsAr.visibility = View.VISIBLE
-        }
-        view.findViewById<ImageButton>(R.id.btn_lang_to_en_extra)?.setOnClickListener {
-            layoutSymbolsExtraAr.visibility = View.GONE
-            layoutSymbolsExtraEn.visibility = View.VISIBLE
-        }
-        view.findViewById<ImageButton>(R.id.btn_lang_to_ar_extra)?.setOnClickListener {
-            layoutSymbolsExtraEn.visibility = View.GONE
-            layoutSymbolsExtraAr.visibility = View.VISIBLE
-        }
+        // تحويل اللغة
+        view.findViewById<ImageButton>(R.id.btn_lang_to_en)?.setOnClickListener { layoutArabic.visibility = View.GONE; layoutEnglish.visibility = View.VISIBLE }
+        view.findViewById<ImageButton>(R.id.btn_lang_to_ar)?.setOnClickListener { layoutEnglish.visibility = View.GONE; layoutArabic.visibility = View.VISIBLE }
 
-        // زرار الشيفت (إنجليزي)
+        // الشيفت
         view.findViewById<ImageButton>(R.id.en_shift)?.setOnClickListener {
             isShifted = !isShifted
             updateShiftState(view)
@@ -205,12 +151,73 @@ class CpmKeyboardService : InputMethodService() {
         return view
     }
 
+    // --- دوال Popup والحذف ---
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupLongPress(btn: View?, alternativeChars: List<String>) {
+        if (btn == null || alternativeChars.isEmpty()) return
+        val handler = Handler(Looper.getMainLooper())
+        var isLongPressed = false
+        var longPressRunnable: Runnable? = null
+
+        btn.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    isLongPressed = false
+                    longPressRunnable = Runnable { isLongPressed = true; showPopup(v, alternativeChars) }
+                    handler.postDelayed(longPressRunnable!!, 400)
+                    true
+                }
+                MotionEvent.ACTION_UP -> {
+                    if (longPressRunnable != null) handler.removeCallbacks(longPressRunnable!!)
+                    if (!isLongPressed) currentInputConnection.commitText((v as Button).text.toString(), 1) else currentPopup?.dismiss()
+                    true
+                }
+                MotionEvent.ACTION_CANCEL -> {
+                    if (longPressRunnable != null) handler.removeCallbacks(longPressRunnable!!)
+                    currentPopup?.dismiss()
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+    private fun showPopup(anchorView: View, chars: List<String>) {
+        currentPopup?.dismiss()
+        val context = anchorView.context
+        val linearLayout = LinearLayout(context).apply {
+            orientation = LinearLayout.HORIZONTAL
+            setBackgroundColor(Color.parseColor("#333333"))
+            setPadding(10, 10, 10, 10)
+        }
+        for (char in chars) {
+            val charBtn = Button(context).apply {
+                text = char
+                textSize = 24f
+                setTextColor(Color.WHITE)
+                setBackgroundColor(Color.TRANSPARENT)
+                minWidth = 0
+                minimumWidth = 0
+                setPadding(20, 10, 20, 10)
+                setOnClickListener {
+                    currentInputConnection.commitText(char, 1)
+                    currentPopup?.dismiss()
+                }
+            }
+            linearLayout.addView(charBtn)
+        }
+        val popup = PopupWindow(linearLayout, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+        popup.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        popup.elevation = 10f
+        popup.showAsDropDown(anchorView, 0, -anchorView.height - 120)
+        currentPopup = popup
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     private fun setupContinuousDelete(btn: View?) {
         val handler = Handler(Looper.getMainLooper())
         var isDeleting = false
         var deleteRunnable: Runnable? = null
-
         btn?.setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -218,13 +225,10 @@ class CpmKeyboardService : InputMethodService() {
                     currentInputConnection?.deleteSurroundingText(1, 0)
                     deleteRunnable = object : Runnable {
                         override fun run() {
-                            if (isDeleting) {
-                                currentInputConnection?.deleteSurroundingText(1, 0)
-                                handler.postDelayed(this, 20) 
-                            }
+                            if (isDeleting) { currentInputConnection?.deleteSurroundingText(1, 0); handler.postDelayed(this, 20) }
                         }
                     }
-                    handler.postDelayed(deleteRunnable!!, 250) 
+                    handler.postDelayed(deleteRunnable!!, 250)
                     true
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
@@ -247,17 +251,10 @@ class CpmKeyboardService : InputMethodService() {
             R.id.en_x to "x", R.id.en_c to "c", R.id.en_v to "v", R.id.en_b to "b",
             R.id.en_n to "n", R.id.en_m to "m"
         )
-
         for ((id, char) in englishKeys) {
-            val btn = view.findViewById<Button>(id)
-            btn?.text = if (isShifted) char.uppercase() else char
+            view.findViewById<Button>(id)?.text = if (isShifted) char.uppercase() else char
         }
-
         val shiftBtn = view.findViewById<ImageButton>(R.id.en_shift)
-        if (isShifted) {
-            shiftBtn?.setColorFilter(android.graphics.Color.parseColor("#4285F4"))
-        } else {
-            shiftBtn?.setColorFilter(android.graphics.Color.parseColor("#FFFFFF"))
-        }
+        if (isShifted) shiftBtn?.setColorFilter(Color.parseColor("#4285F4")) else shiftBtn?.setColorFilter(Color.parseColor("#FFFFFF"))
     }
 }
