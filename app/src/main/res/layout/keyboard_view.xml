@@ -65,7 +65,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- ================== واجهة الأرقام والرموز (عربي) ================== -->
+    <!-- ================== واجهة الأرقام والرموز (عربي) - مطابقة للصورة ================== -->
     <LinearLayout
         android:id="@+id/layout_symbols_ar"
         android:layout_width="match_parent"
@@ -74,6 +74,7 @@
         android:layoutDirection="ltr" 
         android:visibility="gone">
         
+        <!-- الصف الأول -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
             <Button android:id="@+id/sym_ar_1" android:text="١" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ar_2" android:text="٢" style="@style/KeyStyle"/>
@@ -87,43 +88,45 @@
             <Button android:id="@+id/sym_ar_0" android:text="٠" style="@style/KeyStyle"/>
         </LinearLayout>
         
+        <!-- الصف الثاني -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
             <Button android:id="@+id/sym_ar_at" android:text="@" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ar_hash" android:text="#" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ar_dollar" android:text="$" style="@style/KeyStyle"/>
-            <Button android:id="@+id/sym_ar_percent" android:text="%" style="@style/KeyStyle"/>
+            <Button android:id="@+id/sym_ar_underscore" android:text="_" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ar_amp" android:text="&amp;" style="@style/KeyStyle"/>
-            <Button android:id="@+id/sym_ar_star" android:text="*" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ar_minus" android:text="-" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ar_plus" android:text="+" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ar_paren1" android:text="(" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ar_paren2" android:text=")" style="@style/KeyStyle"/>
+            <Button android:id="@+id/sym_ar_slash" android:text="/" style="@style/KeyStyle"/>
         </LinearLayout>
         
+        <!-- الصف الثالث -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-            <Button android:id="@+id/sym_ar_slash" android:text="/" style="@style/KeyStyle"/>
-            <Button android:id="@+id/sym_ar_backslash" android:text="&#92;" style="@style/KeyStyle"/> <!-- تصحيح علامة / -->
+            <Button android:id="@+id/btn_more_sym_ar" android:text="=\&lt;" style="@style/KeyStyle"/>
+            <Button android:id="@+id/sym_ar_star" android:text="*" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ar_quote" android:text="&quot;" style="@style/KeyStyle"/>
+            <Button android:id="@+id/sym_ar_apostrophe" android:text="'" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ar_colon" android:text=":" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ar_semicolon" android:text=";" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ar_excl" android:text="!" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ar_quest" android:text="?" style="@style/KeyStyle"/>
-            <Button android:id="@+id/sym_ar_comma" android:text="," style="@style/KeyStyle"/>
-            <Button android:id="@+id/sym_ar_dot" android:text="." style="@style/KeyStyle"/>
-            <Button android:id="@+id/sym_ar_equal" android:text="=" style="@style/KeyStyle"/>
+            <ImageButton android:id="@+id/btn_del_ar_sym" style="@style/KeyStyleIcon" android:src="@drawable/ic_backspace" android:layout_weight="1.2"/>
         </LinearLayout>
 
+        <!-- الصف الرابع (السفلي) -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
             <Button android:id="@+id/btn_abc_ar" android:text="أبج" style="@style/KeyStyle123"/>
-            <Button android:id="@+id/btn_more_sym_ar" android:text="=\&lt;" style="@style/KeyStyle123"/>
-            <ImageButton android:id="@+id/btn_lang_to_en_sym" style="@style/KeyStyleIcon" android:src="@drawable/ic_globe" android:tint="#FFFFFF" android:layout_weight="1"/>
-            <Button android:id="@+id/btn_space_ar_sym" android:text="العربية" style="@style/KeyStyleSpace" android:layout_weight="3"/>
-            <ImageButton android:id="@+id/btn_del_ar_sym" style="@style/KeyStyleIcon" android:src="@drawable/ic_backspace" android:layout_weight="1.2"/> <!-- ضفنا زرار الحذف هنا -->
-            <ImageButton android:id="@+id/btn_enter_ar_sym" android:src="@drawable/ic_enter" android:background="@drawable/bg_enter" android:layout_width="0dp" android:layout_height="46dp" android:layout_weight="1.1" android:layout_margin="1dp" android:scaleType="centerInside"/>
+            <Button android:id="@+id/sym_ar_comma" android:text="،" style="@style/KeyStyle123"/>
+            <Button android:id="@+id/btn_switch_num_ar" android:text="12\n34" style="@style/KeyStyle123" android:gravity="center"/>
+            <Button android:id="@+id/btn_space_ar_sym" android:text="العربية" style="@style/KeyStyleSpace" android:layout_weight="4"/>
+            <Button android:id="@+id/sym_ar_dot" android:text="." style="@style/KeyStyle123"/>
+            <ImageButton android:id="@+id/btn_enter_ar_sym" android:src="@drawable/ic_enter" android:background="@drawable/bg_enter" android:layout_width="0dp" android:layout_height="46dp" android:layout_weight="1.2" android:layout_margin="1dp" android:scaleType="centerInside"/>
         </LinearLayout>
     </LinearLayout>
 
-    <!-- ================== واجهة الرموز الإضافية (عربي) ================== -->
+    <!-- ================== واجهة الرموز الإضافية (عربي) - مطابقة للصورة ================== -->
     <LinearLayout
         android:id="@+id/layout_symbols_extra_ar"
         android:layout_width="match_parent"
@@ -134,6 +137,7 @@
         
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
             <Button android:id="@+id/sym_ex_ar_tilde" android:text="~" style="@style/KeyStyle"/>
+            <Button android:id="@+id/sym_ex_ar_backtick" android:text="`" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ex_ar_pipe" android:text="|" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ex_ar_bullet" android:text="•" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ex_ar_sqrt" android:text="√" style="@style/KeyStyle"/>
@@ -154,6 +158,7 @@
             <Button android:id="@+id/sym_ex_ar_eq2" android:text="=" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ex_ar_lbrace" android:text="{" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ex_ar_rbrace" android:text="}" style="@style/KeyStyle"/>
+            <Button android:id="@+id/sym_ex_ar_backslash" android:text="\\" style="@style/KeyStyle"/> <!-- تصحيح \ -->
         </LinearLayout>
         
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
@@ -164,19 +169,20 @@
             <Button android:id="@+id/sym_ex_ar_check" android:text="✓" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ex_ar_lbrack" android:text="[" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ex_ar_rbrack" android:text="]" style="@style/KeyStyle"/>
+            <ImageButton android:id="@+id/btn_del_ar_extra" style="@style/KeyStyleIcon" android:src="@drawable/ic_backspace" android:layout_weight="1.2"/>
         </LinearLayout>
 
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
             <Button android:id="@+id/btn_abc_ar_extra" android:text="أبج" style="@style/KeyStyle123"/>
-            <Button android:id="@+id/btn_back_to_sym_ar" android:text="123" style="@style/KeyStyle123"/>
-            <ImageButton android:id="@+id/btn_lang_to_en_extra" style="@style/KeyStyleIcon" android:src="@drawable/ic_globe" android:tint="#FFFFFF" android:layout_weight="1"/>
-            <Button android:id="@+id/btn_space_ar_extra" android:text="العربية" style="@style/KeyStyleSpace" android:layout_weight="3"/>
-            <ImageButton android:id="@+id/btn_del_ar_extra" style="@style/KeyStyleIcon" android:src="@drawable/ic_backspace" android:layout_weight="1.2"/>
-            <ImageButton android:id="@+id/btn_enter_ar_extra" android:src="@drawable/ic_enter" android:background="@drawable/bg_enter" android:layout_width="0dp" android:layout_height="46dp" android:layout_weight="1.1" android:layout_margin="1dp" android:scaleType="centerInside"/>
+            <Button android:id="@+id/btn_back_to_sym_ar" android:text="؟123" style="@style/KeyStyle123"/>
+            <Button android:id="@+id/btn_switch_num_ar_extra" android:text="12\n34" style="@style/KeyStyle123" android:gravity="center"/>
+            <Button android:id="@+id/btn_space_ar_extra" android:text="العربية" style="@style/KeyStyleSpace" android:layout_weight="4"/>
+            <Button android:id="@+id/sym_ex_ar_gt" android:text="&gt;" style="@style/KeyStyle123"/>
+            <ImageButton android:id="@+id/btn_enter_ar_extra" android:src="@drawable/ic_enter" android:background="@drawable/bg_enter" android:layout_width="0dp" android:layout_height="46dp" android:layout_weight="1.2" android:layout_margin="1dp" android:scaleType="centerInside"/>
         </LinearLayout>
     </LinearLayout>
 
-    <!-- ================== واجهة اللغة الإنجليزية ================== -->
+    <!-- ================== واجهة اللغة الإنجليزية (الحروف) ================== -->
     <LinearLayout
         android:id="@+id/layout_english"
         android:layout_width="match_parent"
@@ -230,7 +236,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- ================== واجهة الأرقام والرموز (إنجليزي) ================== -->
+    <!-- ================== واجهة الأرقام والرموز (إنجليزي) - مطابقة للصورة ================== -->
     <LinearLayout
         android:id="@+id/layout_symbols_en"
         android:layout_width="match_parent"
@@ -256,39 +262,38 @@
             <Button android:id="@+id/sym_en_at" android:text="@" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_en_hash" android:text="#" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_en_dollar" android:text="$" style="@style/KeyStyle"/>
-            <Button android:id="@+id/sym_en_percent" android:text="%" style="@style/KeyStyle"/>
+            <Button android:id="@+id/sym_en_underscore" android:text="_" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_en_amp" android:text="&amp;" style="@style/KeyStyle"/>
-            <Button android:id="@+id/sym_en_star" android:text="*" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_en_minus" android:text="-" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_en_plus" android:text="+" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_en_paren1" android:text="(" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_en_paren2" android:text=")" style="@style/KeyStyle"/>
+            <Button android:id="@+id/sym_en_slash" android:text="/" style="@style/KeyStyle"/>
         </LinearLayout>
         
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-            <Button android:id="@+id/sym_en_slash" android:text="/" style="@style/KeyStyle"/>
-            <Button android:id="@+id/sym_en_backslash" android:text="&#92;" style="@style/KeyStyle"/> <!-- تصحيح علامة / -->
+            <Button android:id="@+id/btn_more_sym_en" android:text="=\&lt;" style="@style/KeyStyle"/>
+            <Button android:id="@+id/sym_en_star" android:text="*" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_en_quote" android:text="&quot;" style="@style/KeyStyle"/>
+            <Button android:id="@+id/sym_en_apostrophe" android:text="'" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_en_colon" android:text=":" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_en_semicolon" android:text=";" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_en_excl" android:text="!" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_en_quest" android:text="?" style="@style/KeyStyle"/>
-            <Button android:id="@+id/sym_en_comma" android:text="," style="@style/KeyStyle"/>
-            <Button android:id="@+id/sym_en_dot" android:text="." style="@style/KeyStyle"/>
-            <Button android:id="@+id/sym_en_equal" android:text="=" style="@style/KeyStyle"/>
+            <ImageButton android:id="@+id/btn_del_en_sym" style="@style/KeyStyleIcon" android:src="@drawable/ic_backspace" android:layout_weight="1.2"/>
         </LinearLayout>
 
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
             <Button android:id="@+id/btn_abc_en" android:text="ABC" style="@style/KeyStyle123"/>
-            <Button android:id="@+id/btn_more_sym_en" android:text="=\&lt;" style="@style/KeyStyle123"/>
-            <ImageButton android:id="@+id/btn_lang_to_ar_sym" style="@style/KeyStyleIcon" android:src="@drawable/ic_globe" android:tint="#FFFFFF" android:layout_weight="1"/>
-            <Button android:id="@+id/btn_space_en_sym" android:text="English" style="@style/KeyStyleSpace" android:layout_weight="3"/>
-            <ImageButton android:id="@+id/btn_del_en_sym" style="@style/KeyStyleIcon" android:src="@drawable/ic_backspace" android:layout_weight="1.2"/>
-            <ImageButton android:id="@+id/btn_enter_en_sym" android:src="@drawable/ic_enter" android:background="@drawable/bg_enter" android:layout_width="0dp" android:layout_height="46dp" android:layout_weight="1.1" android:layout_margin="1dp" android:scaleType="centerInside"/>
+            <Button android:id="@+id/sym_en_comma" android:text="," style="@style/KeyStyle123"/>
+            <Button android:id="@+id/btn_switch_num_en" android:text="12\n34" style="@style/KeyStyle123" android:gravity="center"/>
+            <Button android:id="@+id/btn_space_en_sym" android:text="English" style="@style/KeyStyleSpace" android:layout_weight="4"/>
+            <Button android:id="@+id/sym_en_dot" android:text="." style="@style/KeyStyle123"/>
+            <ImageButton android:id="@+id/btn_enter_en_sym" android:src="@drawable/ic_enter" android:background="@drawable/bg_enter" android:layout_width="0dp" android:layout_height="46dp" android:layout_weight="1.2" android:layout_margin="1dp" android:scaleType="centerInside"/>
         </LinearLayout>
     </LinearLayout>
 
-    <!-- ================== واجهة الرموز الإضافية (إنجليزي) ================== -->
+    <!-- ================== واجهة الرموز الإضافية (إنجليزي) - مطابقة للصورة ================== -->
     <LinearLayout
         android:id="@+id/layout_symbols_extra_en"
         android:layout_width="match_parent"
@@ -299,6 +304,7 @@
         
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
             <Button android:id="@+id/sym_ex_en_tilde" android:text="~" style="@style/KeyStyle"/>
+            <Button android:id="@+id/sym_ex_en_backtick" android:text="`" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ex_en_pipe" android:text="|" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ex_en_bullet" android:text="•" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ex_en_sqrt" android:text="√" style="@style/KeyStyle"/>
@@ -319,6 +325,7 @@
             <Button android:id="@+id/sym_ex_en_eq2" android:text="=" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ex_en_lbrace" android:text="{" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ex_en_rbrace" android:text="}" style="@style/KeyStyle"/>
+            <Button android:id="@+id/sym_ex_en_backslash" android:text="\\" style="@style/KeyStyle"/> <!-- تصحيح \ -->
         </LinearLayout>
         
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
@@ -329,15 +336,16 @@
             <Button android:id="@+id/sym_ex_en_check" android:text="✓" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ex_en_lbrack" android:text="[" style="@style/KeyStyle"/>
             <Button android:id="@+id/sym_ex_en_rbrack" android:text="]" style="@style/KeyStyle"/>
+            <ImageButton android:id="@+id/btn_del_en_extra" style="@style/KeyStyleIcon" android:src="@drawable/ic_backspace" android:layout_weight="1.2"/>
         </LinearLayout>
 
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
             <Button android:id="@+id/btn_abc_en_extra" android:text="ABC" style="@style/KeyStyle123"/>
-            <Button android:id="@+id/btn_back_to_sym_en" android:text="123" style="@style/KeyStyle123"/>
-            <ImageButton android:id="@+id/btn_lang_to_ar_extra" style="@style/KeyStyleIcon" android:src="@drawable/ic_globe" android:tint="#FFFFFF" android:layout_weight="1"/>
-            <Button android:id="@+id/btn_space_en_extra" android:text="English" style="@style/KeyStyleSpace" android:layout_weight="3"/>
-            <ImageButton android:id="@+id/btn_del_en_extra" style="@style/KeyStyleIcon" android:src="@drawable/ic_backspace" android:layout_weight="1.2"/>
-            <ImageButton android:id="@+id/btn_enter_en_extra" android:src="@drawable/ic_enter" android:background="@drawable/bg_enter" android:layout_width="0dp" android:layout_height="46dp" android:layout_weight="1.1" android:layout_margin="1dp" android:scaleType="centerInside"/>
+            <Button android:id="@+id/btn_back_to_sym_en" android:text="!#1" style="@style/KeyStyle123"/>
+            <Button android:id="@+id/btn_switch_num_en_extra" android:text="12\n34" style="@style/KeyStyle123" android:gravity="center"/>
+            <Button android:id="@+id/btn_space_en_extra" android:text="English" style="@style/KeyStyleSpace" android:layout_weight="4"/>
+            <Button android:id="@+id/sym_ex_en_gt" android:text="&gt;" style="@style/KeyStyle123"/>
+            <ImageButton android:id="@+id/btn_enter_en_extra" android:src="@drawable/ic_enter" android:background="@drawable/bg_enter" android:layout_width="0dp" android:layout_height="46dp" android:layout_weight="1.2" android:layout_margin="1dp" android:scaleType="centerInside"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
